@@ -22,19 +22,14 @@ internal class Program
       builder.Services
          .WithPython()
          .WithHome(home)
-         .WithVirtualEnvironment(venv)
-         .FromNuGet("3.12.8")
-         // .FromRedistributable(CSnakes.Runtime.Locators.RedistributablePythonVersion.Python3_12);
+         .FromRedistributable(CSnakes.Runtime.Locators.RedistributablePythonVersion.Python3_12)
          // .FromEnvironmentVariable("Python3_ROOT_DIR", "3.12")
-         // .FromMacOSInstallerLocator("3.12")
+         .WithVirtualEnvironment(venv, ensureEnvironment: true)
          .WithUvInstaller(requirementsPath: "requirements.txt");
 
       builder.Logging.ClearProviders();
 
-      builder.Services.AddSerilog(config =>
-      {
-         config.ReadFrom.Configuration(builder.Configuration);
-      });
+      builder.Services.AddSerilog(config => config.ReadFrom.Configuration(builder.Configuration));
 
       if (args is { Length: > 0 })
       {
